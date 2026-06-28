@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Malla Interactiva - Ingeniería en Construcción PUCV</title>
+    <title>Malla Interactive - Ingeniería en Construcción PUCV</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root {
-            --cb: #b39ddb; /* Ciencias Básicas */
-            --am: #90caf9; /* Agua y Medioambiente */
-            --eg: #ff6d00; /* Estructuras y Geotecnia */
-            --gp: #a5d6a7; /* Gestión de Proyectos */
-            --tc: #fff59d; /* Tecnologías */
-            --pi: #f48fb1; /* Proyectos de Integración */
-            --dp: #ffcc80; /* Desarrollo Personal */
-            --op: #b0bec5; /* Optativos */
-            --ff: #bcaaa4; /* Formación Fundamental */
-            --in: #d7ccc8; /* Programa Inglés */
+            --cb: #b39ddb;
+            --am: #90caf9;
+            --eg: #ff6d00;
+            --gp: #a5d6a7;
+            --tc: #fff59d;
+            --pi: #f48fb1;
+            --dp: #ffcc80;
+            --op: #b0bec5;
+            --ff: #bcaaa4;
+            --in: #d7ccc8;
         }
 
         body {
@@ -24,6 +24,36 @@
             background-color: #f5f5f5;
             margin: 0;
             padding: 20px;
+        }
+
+        .header-container {
+            position: relative;
+            margin-bottom: 5px;
+        }
+
+        .version-badge {
+            position: fixed;
+            top: 12px;
+            left: 12px;
+            background: #0277bd;
+            color: white;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            z-index: 1100;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        .sugerencia-top {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 0.8rem;
+            color: #555;
+            font-weight: bold;
+            max-width: 200px;
+            text-align: right;
         }
 
         h1, h2 {
@@ -40,7 +70,6 @@
             color: #0277bd;
         }
 
-        /* Panel de Control de Archivos y Acciones */
         .control-panel {
             display: flex;
             justify-content: center;
@@ -75,7 +104,9 @@
         .btn-png { background-color: #ec407a; }
         .btn-png:hover { background-color: #ad1457; }
 
-        /* Ocultar el input file nativo para usar el botón estilizado */
+        .btn-reset { background-color: #757575; }
+        .btn-reset:hover { background-color: #424242; }
+
         #file-input {
             display: none;
         }
@@ -141,7 +172,6 @@
             color: #777;
         }
 
-        /* Estados del ramo */
         .ramo.bloqueado {
             opacity: 0.4;
             cursor: not-allowed;
@@ -157,7 +187,6 @@
             color: #1b5e20;
         }
 
-        /* Asignación de colores de borde por área */
         .area-cb { border-left-color: var(--cb); }
         .area-am { border-left-color: var(--am); }
         .area-eg { border-left-color: var(--eg); }
@@ -168,14 +197,92 @@
         .area-op { border-left-color: var(--op); }
         .area-ff { border-left-color: var(--ff); }
         .area-in { border-left-color: var(--in); }
+
+        .promo-footer {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #222;
+            font-weight: 500;
+            margin-top: 30px;
+            padding: 10px;
+            background: transparent;
+        }
+
+        .modal-felicitaciones {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            max-width: 400px;
+            width: 90%;
+            animation: popIn 0.3s ease-out;
+        }
+
+        .modal-content h2 {
+            color: #4caf50;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .modal-content p {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .btn-modal-close {
+            background-color: #4caf50;
+            color: white;
+            padding: 10px 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-modal-close:hover {
+            background-color: #388e3c;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.7); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @media (max-width: 900px) {
+            .sugerencia-top {
+                position: static;
+                text-align: center;
+                max-width: 100%;
+                margin: 10px auto;
+            }
+        }
     </style>
 </head>
 <body>
+    <div class="version-badge">Versión 1.0.2</div>
 
-    <h2>Malla Interactiva Curricular</h2>
+    <div class="header-container">
+        <h2>Malla Interactiva Curricular</h2>
+        <div class="sugerencia-top">Cualquier cambio o sugerencia escribir al Instagram que dejo abajo.</div>
+    </div>
+
     <h1>Ingeniería en Construcción - Pontificia Universidad Católica de Valparaíso</h1>
-    <h3 style="text-align: center; color: #666; font-weight: normal;">Esto fue hecho con IA: Con mucho cariño para los estudiantes de Ingeniería en Construcción. Atte: Benjamin S.C.N  </h3>
-    
+    <h3 style="text-align: center; color: #666; font-weight: normal;">Esto fue hecho con IA: Con mucho cariño para los estudiantes de Ingeniería en Construcción. Atte: Benjamin S.C.N</h3>
+
     <div class="stats">
         Créditos Aprobados: <span id="creditos-count">0</span> / 167
     </div>
@@ -185,27 +292,37 @@
         <button class="btn btn-import" onclick="document.getElementById('file-input').click()">Cargar Archivo de Avance</button>
         <input type="file" id="file-input" accept=".json" onchange="importarAvance(event)">
         <button class="btn btn-png" onclick="capturarPantallaPNG()">Descargar como Imagen PNG</button>
+        <button class="btn btn-reset" onclick="reiniciarSeleccion()">Reiniciar Selección</button>
     </div>
 
     <div class="malla-container" id="malla"></div>
 
+    <div class="promo-footer">
+        Si perteneces a la PUCV y quieres una malla como esta para tu carrera escríbeme por @vabalus21 INSTAGRAM
+    </div>
+
+    <div id="modal-felicitaciones" class="modal-felicitaciones">
+        <div class="modal-content">
+            <h2>¡Felicitaciones!</h2>
+            <p>¡Que orgullo me das!</p>
+            <button class="btn-modal-close" onclick="cerrarModal()">¡Muchas Gracias!</button>
+        </div>
+    </div>
+
     <script>
         const ramos = [
-            // Semestre 1
             { id: "MAT1001", nombre: "FUNDAMENTOS DE MATEMATICAS PARA INGENIERIA", cr: 6, sem: 1, area: "cb", pre: [] },
             { id: "FIS1035", nombre: "INTRODUCCION A LA FISICA", cr: 5, sem: 1, area: "cb", pre: [] },
             { id: "ICC141",  nombre: "INTRODUCCION A LA INGENIERIA EN CONSTRUCCION", cr: 3, sem: 1, area: "pi", pre: [] },
             { id: "FIN100",  nombre: "DESARROLLO INTEGRAL Y COMUNICACION PARA INGENIERIA", cr: 3, sem: 1, area: "dp", pre: [] },
             { id: "ANT-CRI", nombre: "ANTROPOLOGIA CRISTIANA", cr: 2, sem: 1, area: "ff", pre: [] },
 
-            // Semestre 2
             { id: "MAT1002", nombre: "CALCULO DIFERENCIAL E INTEGRAL", cr: 6, sem: 2, area: "cb", pre: ["MAT1001"] },
             { id: "FIS1002", nombre: "FISICA PARA INGENIERIA", cr: 5, sem: 2, area: "cb", pre: ["FIS1035"] },
             { id: "ICC151",  nombre: "QUIMICA DE LOS MATERIALES Y APLICACION AMBIENTAL", cr: 3, sem: 2, area: "cb", pre: ["ICC141"] },
             { id: "ICC150",  nombre: "DIBUJO DE INGENIERIA 1", cr: 3, sem: 2, area: "tc", pre: ["ICC141"] },
             { id: "FF-1",    nombre: "FORMACION FUNDAMENTAL 1", cr: 2, sem: 2, area: "ff", pre: [] },
 
-            // Semestre 3
             { id: "MAT1004", nombre: "ALGEBRA LINEAL", cr: 4, sem: 3, area: "cb", pre: ["MAT1001"] },
             { id: "ICC243",  nombre: "MATERIALES DE CONSTRUCCION", cr: 4, sem: 3, area: "tc", pre: ["ICC151"] },
             { id: "ICC247",  nombre: "DIBUJO DE INGENIERIA 2", cr: 3, sem: 3, area: "tc", pre: ["ICC150"] },
@@ -214,7 +331,6 @@
             { id: "FF-2",    nombre: "FORMACION FUNDAMENTAL 2", cr: 2, sem: 3, area: "ff", pre: [] },
             { id: "ING9001", nombre: "INGLES 1", cr: 2, sem: 3, area: "in", pre: [] },
 
-            // Semestre 4
             { id: "ICC256",  nombre: "HIDRAULICA", cr: 3, sem: 4, area: "am", pre: ["MAT1002"] },
             { id: "ICC257",  nombre: "ESTADISTICA Y PROBABILIDAD", cr: 3, sem: 4, area: "cb", pre: ["MAT1002"] },
             { id: "ICC253",  nombre: "TECNOLOGIA DEL HORMIGON", cr: 4, sem: 4, area: "tc", pre: ["ICC243"] },
@@ -222,7 +338,6 @@
             { id: "FF-3",    nombre: "FORMACION FUNDAMENTAL 3", cr: 2, sem: 4, area: "ff", pre: [] },
             { id: "ING9002", nombre: "INGLES 2", cr: 2, sem: 4, area: "in", pre: ["ING9001"] },
 
-            // Semestre 5
             { id: "ICC310",  nombre: "MEDIO AMBIENTE Y SUSTENTABILIDAD", cr: 3, sem: 5, area: "am", pre: ["ICC151"] },
             { id: "ICC358",  nombre: "HIDROLOGIA", cr: 3, sem: 5, area: "am", pre: ["ICC257"] },
             { id: "ICC334",  nombre: "CONTRATOS Y ADMINISTRACION DE EMPRESAS", cr: 3, sem: 5, area: "gp", pre: ["ICC246"] },
@@ -230,7 +345,6 @@
             { id: "ICC335",  nombre: "EDIFICACION 1", cr: 3, sem: 5, area: "tc", pre: ["ICC254"] },
             { id: "ING9003", nombre: "INGLES 3", cr: 2, sem: 5, area: "in", pre: ["ING9002"] },
 
-            // Semestre 6
             { id: "ICC357",  nombre: "OBRAS SANITARIAS", cr: 3, sem: 6, area: "am", pre: ["ICC256"] },
             { id: "ICC346",  nombre: "ASEGURAMIENTO DE LA CALIDAD", cr: 3, sem: 6, area: "gp", pre: ["ICC334"] },
             { id: "ICC352",  nombre: "MECANICA DE SUELOS 1", cr: 4, sem: 6, area: "eg", pre: ["ICC349"] },
@@ -238,7 +352,6 @@
             { id: "ICC354",  nombre: "EDIFICACION 2", cr: 3, sem: 6, area: "tc", pre: ["ICC253", "ICC335"] },
             { id: "ING9004", nombre: "INGLES 4", cr: 2, sem: 6, area: "in", pre: ["ING9003"] },
 
-            // Semestre 7
             { id: "ICC457",  nombre: "INVESTIGACION DE OPERACIONES", cr: 3, sem: 7, area: "gp", pre: ["ICC334"] },
             { id: "ICC446",  nombre: "GESTION FINANCIERA EN LA CONSTRUCCION", cr: 4, sem: 7, area: "gp", pre: ["ICC334"] },
             { id: "ICC440",  nombre: "MECANICA DE SUELOS 2", cr: 3, sem: 7, area: "eg", pre: ["ICC352"] },
@@ -246,32 +359,37 @@
             { id: "ICC443",  nombre: "EQUIPAMIENTO DE EDIFICIOS", cr: 3, sem: 7, area: "tc", pre: ["ICC354"] },
             { id: "ICC445",  nombre: "PRACTICA 2", cr: 2, sem: 7, area: "dp", pre: ["ICC246"] },
 
-            // Semestre 8
             { id: "ICC462",  nombre: "EVALUACION DE PROYECTOS", cr: 4, sem: 8, area: "gp", pre: ["ICC457"] },
             { id: "ICC454",  nombre: "CAMINOS 1", cr: 4, sem: 8, area: "gp", pre: ["ICC440"] },
             { id: "ICC463",  nombre: "OBRAS DE INFRAESTRUCTURA", cr: 4, sem: 8, area: "pi", pre: ["ICC440"] },
             { id: "ICC460",  nombre: "PROGRAMACION Y GESTION DE PROYECTOS", cr: 4, sem: 8, area: "gp", pre: ["ICC446"] },
             { id: "OPT-1",   nombre: "OPTATIVO 1", cr: 3, sem: 8, area: "op", pre: [] },
 
-            // Semestre 9
             { id: "ICC579",  nombre: "TALLER DE TITULO", cr: 8, sem: 9, area: "pi", pre: ["ICC460"] },
             { id: "ICC544",  nombre: "CAMINOS 2", cr: 4, sem: 9, area: "gp", pre: ["ICC454"] },
             { id: "ICC575",  nombre: "PRACTICA 3", cr: 2, sem: 9, area: "dp", pre: ["ICC445"] },
             { id: "OPT-2",   nombre: "OPTATIVO 2", cr: 3, sem: 9, area: "op", pre: [] }
         ];
 
-        // Se inicializa cargando los datos guardados en el almacenamiento local automático
         let aprobados = new Set(JSON.parse(localStorage.getItem('malla_aprobados_auto')) || []);
 
         function guardarProgresoLocal() {
             localStorage.setItem('malla_aprobados_auto', JSON.stringify([...aprobados]));
         }
 
+        function reiniciarSeleccion() {
+            if (confirm("¿Estás seguro de que deseas reiniciar toda la selección y empezar de cero?")) {
+                aprobados.clear();
+                guardarProgresoLocal();
+                actualizarMalla();
+            }
+        }
+
         function exportarAvance() {
             const dataStr = JSON.stringify([...aprobados]);
             const blob = new Blob([dataStr], { type: "application/json" });
             const url = URL.createObjectURL(blob);
-            
+
             const link = document.createElement('a');
             link.href = url;
             link.download = "avance_curricular_construccion.json";
@@ -302,7 +420,7 @@
                 }
             };
             lector.readAsText(archivo);
-            event.target.value = ''; // Resetear el input file
+            event.target.value = '';
         }
 
         function capturarPantallaPNG() {
@@ -325,7 +443,7 @@
             for (let i = 1; i <= 9; i++) {
                 const col = document.createElement('div');
                 col.className = 'semestre-col';
-                
+
                 const titulo = document.createElement('div');
                 titulo.className = 'semestre-titulo';
                 titulo.innerText = `${i}° Semestre`;
@@ -335,7 +453,7 @@
                 ramosSemestre.forEach(ramo => {
                     const card = document.createElement('div');
                     const cumplePre = ramo.pre.every(p => aprobados.has(p));
-                    
+
                     card.className = `ramo area-${ramo.area}`;
                     if (!cumplePre && ramo.pre.length > 0) {
                         card.classList.add('bloqueado');
@@ -358,13 +476,13 @@
                             alert(`Para cursar este ramo necesitas aprobar primero: ${ramo.pre.join(', ')}`);
                             return;
                         }
-                        
+
                         if (aprobados.has(ramo.id)) {
                             removerCascada(ramo.id);
                         } else {
                             aprobados.add(ramo.id);
                         }
-                        
+
                         guardarProgresoLocal();
                         actualizarMalla();
                     };
@@ -395,6 +513,18 @@
                 if (ramo) totalCreditos += ramo.cr;
             });
             document.getElementById('creditos-count').innerText = totalCreditos;
+
+            if (aprobados.size === ramos.length) {
+                mostrarFelicitaciones();
+            }
+        }
+
+        function mostrarFelicitaciones() {
+            document.getElementById('modal-felicitaciones').style.display = 'flex';
+        }
+
+        function cerrarModal() {
+            document.getElementById('modal-felicitaciones').style.display = 'none';
         }
 
         actualizarMalla();
