@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Malla Interactiva - Ingeniería en Construcción PUCV</title>
+    <style>
+        :root {
+            --cb: #b39ddb; /* Ciencias Básicas */
+            --am: #90caf9; /* Agua y Medioambiente */
+            --eg: #ff6d00; /* Estructuras y Geotecnia */
+            --gp: #a5d6a7; /* Gestión de Proyectos */
+            --tc: #fff59d; /* Tecnologías */
+            --pi: #f48fb1; /* Proyectos de Integración */
+            --dp: #ffcc80; /* Desarrollo Personal */
+            --op: #b0bec5; /* Optativos */
+            --ff: #bcaaa4; /* Formación Fundamental */
+            --in: #d7ccc8; /* Programa Inglés */
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .stats {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #0277bd;
+        }
+
+        .malla-container {
+            display: grid;
+            grid-template-columns: repeat(9, minmax(140px, 1fr));
+            gap: 15px;
+            overflow-x: auto;
+            padding: 10px;
+        }
+
+        .semestre-col {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .semestre-titulo {
+            text-align: center;
+            font-weight: bold;
+            background-color: #e0e0e0;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .ramo {
+            background-color: white;
+            border-radius: 6px;
+            padding: 10px;
+            min-height: 85px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+            border-left: 8px solid #ccc;
+            position: relative;
+        }
+
+        .ramo-codigo {
+            font-size: 0.7rem;
+            color: #666;
+            font-weight: bold;
+        }
+
+        .ramo-nombre {
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-align: center;
+            margin: 5px 0;
+            color: #222;
+        }
+
+        .ramo-footer {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.65rem;
+            color: #777;
+        }
+
+        /* Estados del ramo */
+        .ramo.bloqueado {
+            opacity: 0.4;
+            cursor: not-allowed;
+            background-color: #eaeaea;
+        }
+
+        .ramo.aprobado {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50 !important;
+        }
+
+        .ramo.aprobado .ramo-nombre {
+            color: #1b5e20;
+        }
+
+        /* Asignación de colores de borde por área */
+        .area-cb { border-left-color: var(--cb); }
+        .area-am { border-left-color: var(--am); }
+        .area-eg { border-left-color: var(--eg); }
+        .area-gp { border-left-color: var(--gp); }
+        .area-tc { border-left-color: var(--tc); }
+        .area-pi { border-left-color: var(--pi); }
+        .area-dp { border-left-color: var(--dp); }
+        .area-op { border-left-color: var(--op); }
+        .area-ff { border-left-color: var(--ff); }
+        .area-in { border-left-color: var(--in); }
+    </style>
+</head>
+<body>
+
+    <h2>Malla Interactiva Curricular</h2>
+    <h1>Ingeniería en Construcción - Pontificia Universidad Católica de Valparaíso</h1>
+    <h3 style="text-align: center; color: #666; font-weight: normal;">Esto fue hecho con IA: Con mucho cariño para los estudiantes de Ingeniería en Construcción. Atte: B.S.C.N</h3>
+    
+    <div class="stats">
+        Créditos Aprobados: <span id="creditos-count">0</span> / 167
+    </div>
+
+    <div class="malla-container" id="malla">
+        <!-- Generado dinámicamente por JavaScript -->
+    </div>
+
+    <script>
+        // Estructura de datos basada fielmente en el documento de tu universidad
+        const ramos = [
+            // Semestre 1
+            { id: "MAT1001", nombre: "FUNDAMENTOS DE MATEMATICAS PARA INGENIERIA", cr: 6, sem: 1, area: "cb", pre: [] },
+            { id: "FIS1035", nombre: "INTRODUCCION A LA FISICA", cr: 5, sem: 1, area: "cb", pre: [] },
+            { id: "ICC141",  nombre: "INTRODUCCION A LA INGENIERIA EN CONSTRUCCION", cr: 3, sem: 1, area: "pi", pre: [] },
+            { id: "FIN100",  nombre: "DESARROLLO INTEGRAL Y COMUNICACION PARA INGENIERIA", cr: 3, sem: 1, area: "dp", pre: [] },
+            { id: "ANT-CRI", nombre: "ANTROPOLOGIA CRISTIANA", cr: 2, sem: 1, area: "ff", pre: [] },
+
+            // Semestre 2
+            { id: "MAT1002", nombre: "CALCULO DIFERENCIAL E INTEGRAL", cr: 6, sem: 2, area: "cb", pre: ["MAT1001"] },
+            { id: "FIS1002", nombre: "FISICA PARA INGENIERIA", cr: 5, sem: 2, area: "cb", pre: ["FIS1035"] },
+            { id: "ICC151",  nombre: "QUIMICA DE LOS MATERIALES Y APLICACION AMBIENTAL", cr: 3, sem: 2, area: "cb", pre: ["ICC141"] },
+            { id: "ICC150",  nombre: "DIBUJO DE INGENIERIA 1", cr: 3, sem: 2, area: "tc", pre: ["ICC141"] },
+            { id: "FF-1",    nombre: "FORMACION FUNDAMENTAL 1", cr: 2, sem: 2, area: "ff", pre: [] },
+
+            // Semestre 3
+            { id: "MAT1004", nombre: "ALGEBRA LINEAL", cr: 4, sem: 3, area: "cb", pre: ["MAT1001"] },
+            { id: "ICC243",  nombre: "MATERIALES DE CONSTRUCCION", cr: 4, sem: 3, area: "tc", pre: ["ICC151"] },
+            { id: "ICC247",  nombre: "DIBUJO DE INGENIERIA 2", cr: 3, sem: 3, area: "tc", pre: ["ICC150"] },
+            { id: "ICC246",  nombre: "PRACTICA 1", cr: 2, sem: 3, area: "dp", pre: ["ICC150"] },
+            { id: "ETI-CRI", nombre: "ETICA CRISTIANA", cr: 2, sem: 3, area: "ff", pre: [] },
+            { id: "FF-2",    nombre: "FORMACION FUNDAMENTAL 2", cr: 2, sem: 3, area: "ff", pre: [] },
+            { id: "ING9001", nombre: "INGLES 1", cr: 2, sem: 3, area: "in", pre: [] },
+
+            // Semestre 4
+            { id: "ICC256",  nombre: "HIDRAULICA", cr: 3, sem: 4, area: "am", pre: ["MAT1002"] },
+            { id: "ICC257",  nombre: "ESTADISTICA Y PROBABILIDAD", cr: 3, sem: 4, area: "cb", pre: ["MAT1002"] },
+            { id: "ICC253",  nombre: "TECNOLOGIA DEL HORMIGON", cr: 4, sem: 4, area: "tc", pre: ["ICC243"] },
+            { id: "ICC254",  nombre: "TOPOGRAFIA", cr: 4, sem: 4, area: "tc", pre: ["ICC247"] },
+            { id: "FF-3",    nombre: "FORMACION FUNDAMENTAL 3", cr: 2, sem: 4, area: "ff", pre: [] },
+            { id: "ING9002", nombre: "INGLES 2", cr: 2, sem: 4, area: "in", pre: ["ING9001"] },
+
+            // Semestre 5
+            { id: "ICC310",  nombre: "MEDIO AMBIENTE Y SUSTENTABILIDAD", cr: 3, sem: 5, area: "am", pre: ["ICC151"] },
+            { id: "ICC358",  nombre: "HIDROLOGIA", cr: 3, sem: 5, area: "am", pre: ["ICC257"] },
+            { id: "ICC334",  nombre: "CONTRATOS Y ADMINISTRACION DE EMPRESAS", cr: 3, sem: 5, area: "gp", pre: ["ICC246"] },
+            { id: "ICC349",  nombre: "ESTRUCTURAS 1", cr: 4, sem: 5, area: "eg", pre: ["ICC243"] },
+            { id: "ICC335",  nombre: "EDIFICACION 1", cr: 3, sem: 5, area: "tc", pre: ["ICC254"] },
+            { id: "ING9003", nombre: "INGLES 3", cr: 2, sem: 5, area: "in", pre: ["ING9002"] },
+
+            // Semestre 6
+            { id: "ICC357",  nombre: "OBRAS SANITARIAS", cr: 3, sem: 6, area: "am", pre: ["ICC256"] },
+            { id: "ICC346",  nombre: "ASEGURAMIENTO DE LA CALIDAD", cr: 3, sem: 6, area: "gp", pre: ["ICC334"] },
+            { id: "ICC352",  nombre: "MECANICA DE SUELOS 1", cr: 4, sem: 6, area: "eg", pre: ["ICC349"] },
+            { id: "ICC359",  nombre: "ESTRUCTURAS 2", cr: 4, sem: 6, area: "eg", pre: ["ICC349"] },
+            { id: "ICC354",  nombre: "EDIFICACION 2", cr: 3, sem: 6, area: "tc", pre: ["ICC253", "ICC335"] },
+            { id: "ING9004", nombre: "INGLES 4", cr: 2, sem: 6, area: "in", pre: ["ING9003"] },
+
+            // Semestre 7
+            { id: "ICC457",  nombre: "INVESTIGACION DE OPERACIONES", cr: 3, sem: 7, area: "gp", pre: ["ICC334"] },
+            { id: "ICC446",  nombre: "GESTION FINANCIERA EN LA CONSTRUCCION", cr: 4, sem: 7, area: "gp", pre: ["ICC334"] },
+            { id: "ICC440",  nombre: "MECANICA DE SUELOS 2", cr: 3, sem: 7, area: "eg", pre: ["ICC352"] },
+            { id: "ICC450",  nombre: "ESTRUCTURAS 3", cr: 4, sem: 7, area: "eg", pre: ["ICC359"] },
+            { id: "ICC443",  nombre: "EQUIPAMIENTO DE EDIFICIOS", cr: 3, sem: 7, area: "tc", pre: ["ICC354"] },
+            { id: "ICC445",  nombre: "PRACTICA 2", cr: 2, sem: 7, area: "dp", pre: ["ICC246"] },
+
+            // Semestre 8
+            { id: "ICC462",  nombre: "EVALUACION DE PROYECTOS", cr: 4, sem: 8, area: "gp", pre: ["ICC457"] },
+            { id: "ICC454",  nombre: "CAMINOS 1", cr: 4, sem: 8, area: "gp", pre: ["ICC440"] },
+            { id: "ICC463",  nombre: "OBRAS DE INFRAESTRUCTURA", cr: 4, sem: 8, area: "pi", pre: ["ICC440"] },
+            { id: "ICC460",  nombre: "PROGRAMACION Y GESTION DE PROYECTOS", cr: 4, sem: 8, area: "gp", pre: ["ICC446"] },
+            { id: "OPT-1",   nombre: "OPTATIVO 1", cr: 3, sem: 8, area: "op", pre: [] },
+
+            // Semestre 9
+            { id: "ICC579",  nombre: "TALLER DE TITULO", cr: 8, sem: 9, area: "pi", pre: ["ICC460"] },
+            { id: "ICC544",  nombre: "CAMINOS 2", cr: 4, sem: 9, area: "gp", pre: ["ICC454"] },
+            { id: "ICC575",  nombre: "PRACTICA 3", cr: 2, sem: 9, area: "dp", pre: ["ICC445"] },
+            { id: "OPT-2",   nombre: "OPTATIVO 2", cr: 3, sem: 9, area: "op", pre: [] }
+        ];
+
+        const aprobados = new Set();
+
+        function renderMalla() {
+            const container = document.getElementById('malla');
+            container.innerHTML = '';
+
+            // Crear columnas de semestres
+            for (let i = 1; i <= 9; i++) {
+                const col = document.createElement('div');
+                col.className = 'semestre-col';
+                
+                const titulo = document.createElement('div');
+                titulo.className = 'semestre-titulo';
+                titulo.innerText = `${i}° Semestre`;
+                col.appendChild(titulo);
+
+                // Filtrar ramos del semestre actual
+                const ramosSemestre = ramos.filter(r => r.sem === i);
+                ramosSemestre.forEach(ramo => {
+                    const card = document.createElement('div');
+                    
+                    // Verificar si está bloqueado por prerrequisitos
+                    const cumplePre = ramo.pre.every(p => aprobados.has(p));
+                    
+                    card.className = `ramo area-${ramo.area}`;
+                    if (!cumplePre && ramo.pre.length > 0) {
+                        card.classList.add('bloqueado');
+                    }
+                    if (aprobados.has(ramo.id)) {
+                        card.classList.add('aprobado');
+                    }
+
+                    card.innerHTML = `
+                        <div class="ramo-codigo">${ramo.id}</div>
+                        <div class="ramo-nombre">${ramo.nombre}</div>
+                        <div class="ramo-footer">
+                            <span>${ramo.cr} CR</span>
+                            <span>${ramo.pre.length > 0 ? 'Req' : 'Libre'}</span>
+                        </div>
+                    `;
+
+                    // Lógica del clic
+                    card.onclick = () => {
+                        if (!cumplePre && ramo.pre.length > 0) {
+                            alert(`Para cursar este ramo necesitas aprobar primero: ${ramo.pre.join(', ')}`);
+                            return;
+                        }
+                        
+                        if (aprobados.has(ramo.id)) {
+                            removerCascada(ramo.id);
+                        } else {
+                            aprobados.add(ramo.id);
+                        }
+                        
+                        actualizarMalla();
+                    };
+
+                    col.appendChild(card);
+                });
+
+                container.appendChild(col);
+            }
+        }
+
+        function removerCascada(id) {
+            if (aprobados.has(id)) {
+                aprobados.delete(id);
+                ramos.forEach(r => {
+                    if (r.pre.includes(id)) {
+                        removerCascada(r.id);
+                    }
+                });
+            }
+        }
+
+        function actualizarMalla() {
+            renderMalla();
+            let totalCreditos = 0;
+            aprobados.forEach(id => {
+                const ramo = ramos.find(r => r.id === id);
+                if (ramo) totalCreditos += ramo.cr;
+            });
+            document.getElementById('creditos-count').innerText = totalCreditos;
+        }
+
+        actualizarMalla();
+    </script>
+</body>
+</html>
