@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Malla Interactiva - Ingeniería en Construcción PUCV</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root {
             --cb: #b39ddb; /* Ciencias Básicas */
@@ -39,12 +40,53 @@
             color: #0277bd;
         }
 
+        /* Panel de Control de Archivos y Acciones */
+        .control-panel {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 18px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-export { background-color: #0288d1; }
+        .btn-export:hover { background-color: #01579b; }
+
+        .btn-import { background-color: #26a69a; }
+        .btn-import:hover { background-color: #00695c; }
+
+        .btn-png { background-color: #ec407a; }
+        .btn-png:hover { background-color: #ad1457; }
+
+        /* Ocultar el input file nativo para usar el botón estilizado */
+        #file-input {
+            display: none;
+        }
+
         .malla-container {
             display: grid;
             grid-template-columns: repeat(9, minmax(140px, 1fr));
             gap: 15px;
             overflow-x: auto;
             padding: 10px;
+            background-color: #f5f5f5;
         }
 
         .semestre-col {
@@ -132,18 +174,22 @@
 
     <h2>Malla Interactiva Curricular</h2>
     <h1>Ingeniería en Construcción - Pontificia Universidad Católica de Valparaíso</h1>
-    <h3 style="text-align: center; color: #666; font-weight: normal;">Esto fue hecho con IA: Con mucho cariño para los estudiantes de Ingeniería en Construcción. Atte: B.S.C.N</h3>
+    <h3 style="text-align: center; color: #666; font-weight: normal;">Esto fue hecho con IA: Con mucho cariño para los estudiantes de Ingeniería en Construcción. Atte: Benjamin S.C.N  </h3>
     
     <div class="stats">
         Créditos Aprobados: <span id="creditos-count">0</span> / 167
     </div>
 
-    <div class="malla-container" id="malla">
-        <!-- Generado dinámicamente por JavaScript -->
+    <div class="control-panel">
+        <button class="btn btn-export" onclick="exportarAvance()">Guardar Archivo de Avance</button>
+        <button class="btn btn-import" onclick="document.getElementById('file-input').click()">Cargar Archivo de Avance</button>
+        <input type="file" id="file-input" accept=".json" onchange="importarAvance(event)">
+        <button class="btn btn-png" onclick="capturarPantallaPNG()">Descargar como Imagen PNG</button>
     </div>
 
+    <div class="malla-container" id="malla"></div>
+
     <script>
-        // Estructura de datos basada fielmente en el documento de tu universidad
         const ramos = [
             // Semestre 1
             { id: "MAT1001", nombre: "FUNDAMENTOS DE MATEMATICAS PARA INGENIERIA", cr: 6, sem: 1, area: "cb", pre: [] },
@@ -214,13 +260,68 @@
             { id: "OPT-2",   nombre: "OPTATIVO 2", cr: 3, sem: 9, area: "op", pre: [] }
         ];
 
-        const aprobados = new Set();
+        // Se inicializa cargando los datos guardados en el almacenamiento local automático
+        let aprobados = new Set(JSON.parse(localStorage.getItem('malla_aprobados_auto')) || []);
+
+        function guardarProgresoLocal() {
+            localStorage.setItem('malla_aprobados_auto', JSON.stringify([...aprobados]));
+        }
+
+        function exportarAvance() {
+            const dataStr = JSON.stringify([...aprobados]);
+            const blob = new Blob([dataStr], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = "avance_curricular_construccion.json";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+
+        function importarAvance(event) {
+            const archivo = event.target.files[0];
+            if (!archivo) return;
+
+            const lector = new FileReader();
+            lector.onload = function(e) {
+                try {
+                    const listaCargada = JSON.parse(e.target.result);
+                    if (Array.isArray(listaCargada)) {
+                        aprobados = new Set(listaCargada);
+                        guardarProgresoLocal();
+                        actualizarMalla();
+                        alert("¡Avance curricular cargado correctamente!");
+                    } else {
+                        alert("El formato del archivo no es válido.");
+                    }
+                } catch (error) {
+                    alert("Error al leer el archivo. Asegúrate de subir un archivo generado por esta página.");
+                }
+            };
+            lector.readAsText(archivo);
+            event.target.value = ''; // Resetear el input file
+        }
+
+        function capturarPantallaPNG() {
+            html2canvas(document.body, {
+                useCORS: true,
+                backgroundColor: "#f5f5f5",
+                scale: 2
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'Mi_Avance_Malla_PUCV.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        }
 
         function renderMalla() {
             const container = document.getElementById('malla');
             container.innerHTML = '';
 
-            // Crear columnas de semestres
             for (let i = 1; i <= 9; i++) {
                 const col = document.createElement('div');
                 col.className = 'semestre-col';
@@ -230,12 +331,9 @@
                 titulo.innerText = `${i}° Semestre`;
                 col.appendChild(titulo);
 
-                // Filtrar ramos del semestre actual
                 const ramosSemestre = ramos.filter(r => r.sem === i);
                 ramosSemestre.forEach(ramo => {
                     const card = document.createElement('div');
-                    
-                    // Verificar si está bloqueado por prerrequisitos
                     const cumplePre = ramo.pre.every(p => aprobados.has(p));
                     
                     card.className = `ramo area-${ramo.area}`;
@@ -255,7 +353,6 @@
                         </div>
                     `;
 
-                    // Lógica del clic
                     card.onclick = () => {
                         if (!cumplePre && ramo.pre.length > 0) {
                             alert(`Para cursar este ramo necesitas aprobar primero: ${ramo.pre.join(', ')}`);
@@ -268,6 +365,7 @@
                             aprobados.add(ramo.id);
                         }
                         
+                        guardarProgresoLocal();
                         actualizarMalla();
                     };
 
